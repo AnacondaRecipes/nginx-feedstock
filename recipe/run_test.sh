@@ -43,7 +43,7 @@ http_test() {
     if [ "$UPID" != "" ]; then
         echo -e "${bldgre}>>> Spawned PID $UPID, running tests${txtrst}"
         sleep 5
-        curl -fI $URL
+        curl -D/dev/stderr -s -f -I $URL
         RET=$?
         if [ $RET != 0 ]; then
             die "${bldred}>>> Error during curl run${txtrst}"
@@ -72,6 +72,13 @@ test_nginx_process() {
 
 }
 
+# Make sure we clean up after ourselves
+trap die EXIT
+trap die SIGINT SIGTERM
+
+# Don't drop privileges for the purposes of this test to avoid possible
+# permissions issues when accessing "${PREFIX}/etc/nginx" and its contents.
+echo -e "\n\nuser `id -nu` `id -ng`;"  >>"${PREFIX}/etc/nginx/nginx.conf"
 
 nginx -V
 nginx -t
