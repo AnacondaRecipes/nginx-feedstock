@@ -18,7 +18,8 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  skip: True  # [win]
+  # nginx and its dependency libgd are currently unavailable on s390x.
+  skip: True  # [win or s390x]
 
 requirements:
   build:
