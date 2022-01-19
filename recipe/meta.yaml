@@ -34,7 +34,7 @@ requirements:
     - libxslt
     - libxml2
     - openssl
-    - pcre2
+    - pcre
     - zlib
 
 test:
