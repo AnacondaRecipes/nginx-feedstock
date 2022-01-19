@@ -1,6 +1,6 @@
 {% set name = "nginx" %}
-{% set version = "1.19.10" %}
-{% set sha256 = "e8d0290ff561986ad7cd6c33307e12e11b137186c4403a6a5ccdb4914c082d88" %}
+{% set version = "1.21.5" %}
+{% set sha256 = "b20f3bf533a518a6f0f3a7967dfeed872d268d31e4cc121a0001329602ddcfbb" %}
 
 package:
   name: {{ name|lower }}
@@ -31,11 +31,14 @@ requirements:
     - libxslt
     - libxml2
     - openssl
-    - pcre
+    - pcre2
     - zlib
 
 test:
+  requires:
+    - curl
   commands:
+    - nginx -h
     - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
     - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
