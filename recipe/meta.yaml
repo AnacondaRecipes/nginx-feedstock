@@ -26,6 +26,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - make
+    - m2-patch  # [win]
+    - patch  # [not win]
   host:
     - libgd
     - libxslt
