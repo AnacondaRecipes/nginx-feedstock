@@ -1,6 +1,5 @@
 {% set name = "nginx" %}
-{% set version = "1.19.10" %}
-{% set sha256 = "e8d0290ff561986ad7cd6c33307e12e11b137186c4403a6a5ccdb4914c082d88" %}
+{% set version = "1.21.5" %}
 
 package:
   name: {{ name|lower }}
@@ -9,7 +8,7 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://nginx.org/download/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: b20f3bf533a518a6f0f3a7967dfeed872d268d31e4cc121a0001329602ddcfbb
   patches:
     - pcre-config.patch  # find pcre in PREFIX instead of /usr
 
@@ -18,7 +17,7 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  skip: True  # [win]
+  skip: true  # [win]
 
 requirements:
   build:
@@ -26,20 +25,25 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - make
-    - patch       # [not win]
-    - m2-patch    # [win]
-   host:
-    - libgd
-    - libxslt
-    - libxml2
+    - m2-patch  # [win]
+    - patch     # [not win]
+  host:
+    - libgd 2.2.*
+    - libxslt 1.1.*
     - openssl
-    - pcre
+    - pcre2
     - zlib
-
+  run:
+    - libgd 2.2.*
+    - libxslt 1.1.*
+    - openssl
+    - pcre2
+    - libxml2
 test:
   commands:
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
+    - nginx -h
+  requires:
+    - curl
 
 about:
   home: http://www.nginx.org
@@ -57,3 +61,4 @@ about:
 extra:
   recipe-maintainers:
     - sodre
+    - fhoehle
