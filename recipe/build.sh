@@ -14,7 +14,8 @@ if [[ $(uname -s) == Darwin ]]; then
 
   export cc_opt="$cc_opt -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=spp-buffer-size=4 -fno-strict-overflow -m64 -mtune=generic -fPIC"
 
-  export ld_opt="-L$PREFIX/lib"
+  export cc_opt="$cc_opt $CFLAGS"
+  export ld_opt="-L$PREFIX/lib $LDFLAGS"
   # http://blog.quarkslab.com/clang-hardening-cheat-sheet.html
   # TODO: ASLR
 
