@@ -1,6 +1,5 @@
 {% set name = "nginx" %}
-{% set version = "1.21.5" %}
-{% set sha256 = "b20f3bf533a518a6f0f3a7967dfeed872d268d31e4cc121a0001329602ddcfbb" %}
+{% set version = "1.21.6" %}
 
 package:
   name: {{ name|lower }}
@@ -9,7 +8,7 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://nginx.org/download/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 66dc7081488811e9f925719e34d1b4504c2801c81dee2920e5452a86b11405ae
   patches:
     - pcre-config.patch  # find pcre in PREFIX instead of /usr
 
@@ -18,8 +17,7 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  # nginx and its dependency libgd are currently unavailable on s390x.
-  skip: True  # [win or s390x]
+  skip: true  # [win]
 
 requirements:
   build:
@@ -27,26 +25,26 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - make
-    - patch       # [not win]
-    - m2-patch    # [win]
-   host:
-    - libgd
-    - libxslt
-    - libxml2
+  host:
+    - libgd 2.2.*
+    - libxslt 1.1.*
     - openssl
     - pcre2
     - zlib
+  run:
+    - libgd 2.2.*
+    - libxslt 1.1.*
+    - openssl
+    - pcre2
 
 test:
-  requires:
-    - curl
   commands:
     - nginx -h
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
+  requires:
+    - curl
 
 about:
-  home: http://www.nginx.org
+  home: https://www.nginx.org
   license: BSD-2-Clause
   license_family: BSD
   license_file: LICENSE
@@ -55,8 +53,8 @@ about:
     Nginx can act as a reverse proxy server for TCP, UDP, HTTP, HTTPS, SMTP,
     POP3, IMAP, and gRPC protocols, as well as a load balancer and an HTTP cache.
     Nginx uses an asynchronous event-driven approach to handling requests.
-  doc_url: http://nginx.org/en/docs
-  dev_url: http://hg.nginx.org/nginx
+  doc_url: https://nginx.org/en/docs
+  dev_url: https://hg.nginx.org/nginx
 
 extra:
   recipe-maintainers:
