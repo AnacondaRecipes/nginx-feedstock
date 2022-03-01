@@ -18,6 +18,8 @@ build:
     - etc/*
     - var/log/nginx/*
   skip: true  # [win]
+  ignore_run_exports:
+    - libgfortran5  # [osx and arm64]
 
 requirements:
   build:
