@@ -17,7 +17,8 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  skip: true  # [win]
+  # nginx and libgd currently isn't available on s390x 
+  skip: true  # [win or s390x]
   ignore_run_exports:
     - libgfortran5  # [osx and arm64]
 

@@ -2,6 +2,14 @@
 
 set +x
 
+if [[ "${target_platform}" == linux-aarch64 ]]; then
+   type ps
+   export PATH=SPATH:/usr/bin
+else
+    type ps
+fi
+
+
 if [[ -n "$TERM" && "$TERM" != dumb ]]; then
     txtund=$(tput sgr 0 1)          # underline
     txtbld=$(tput bold)             # bold
