@@ -3,7 +3,7 @@
 set +x
 
 if [[ "${target_platform}" == linux-aarch64 ]]; then
-   export PATH=SPATH:/usr/bin
+   export PATH=$PATH:/usr/bin
 else
     type ps
 fi
