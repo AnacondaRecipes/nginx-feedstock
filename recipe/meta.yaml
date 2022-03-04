@@ -1,6 +1,5 @@
 {% set name = "nginx" %}
-{% set version = "1.19.10" %}
-{% set sha256 = "e8d0290ff561986ad7cd6c33307e12e11b137186c4403a6a5ccdb4914c082d88" %}
+{% set version = "1.21.6" %}
 
 package:
   name: {{ name|lower }}
@@ -9,7 +8,7 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://nginx.org/download/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 66dc7081488811e9f925719e34d1b4504c2801c81dee2920e5452a86b11405ae
   patches:
     - pcre-config.patch  # find pcre in PREFIX instead of /usr
 
@@ -18,7 +17,10 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  skip: True  # [win]
+  # nginx and libgd currently isn't available on s390x 
+  skip: true  # [win or s390x]
+  ignore_run_exports:
+    - libgfortran5  # [osx and arm64]
 
 requirements:
   build:
@@ -26,23 +28,29 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - make
-    - patch       # [not win]
-    - m2-patch    # [win]
-   host:
-    - libgd
-    - libxslt
-    - libxml2
+    - m2-patch  # [win]
+    - patch  # [not win] 
+  host:
+    - libgd 2.2.*
+    - libxslt 1.1.*
     - openssl
-    - pcre
+    - pcre2
     - zlib
+  run:
+    - libgd 2.2.*
+    - libxml2
+    - libxslt 1.1.*
+    - openssl
+    - pcre2
 
 test:
   commands:
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [unix]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
+    - nginx -h
+  requires:
+    - curl
 
 about:
-  home: http://www.nginx.org
+  home: https://www.nginx.org
   license: BSD-2-Clause
   license_family: BSD
   license_file: LICENSE
@@ -51,8 +59,8 @@ about:
     Nginx can act as a reverse proxy server for TCP, UDP, HTTP, HTTPS, SMTP,
     POP3, IMAP, and gRPC protocols, as well as a load balancer and an HTTP cache.
     Nginx uses an asynchronous event-driven approach to handling requests.
-  doc_url: http://nginx.org/en/docs
-  dev_url: http://hg.nginx.org/nginx
+  doc_url: https://nginx.org/en/docs
+  dev_url: https://hg.nginx.org/nginx
 
 extra:
   recipe-maintainers:

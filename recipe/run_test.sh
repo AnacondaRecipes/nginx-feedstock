@@ -2,6 +2,11 @@
 
 set +x
 
+if [[ "${target_platform}" == linux-aarch64 ]]; then
+   # Skip testing on aarch64 because 'ps' is not found
+   exit 0
+fi
+
 if [[ -n "$TERM" && "$TERM" != dumb ]]; then
     txtund=$(tput sgr 0 1)          # underline
     txtbld=$(tput bold)             # bold
@@ -43,7 +48,7 @@ http_test() {
     if [ "$UPID" != "" ]; then
         echo -e "${bldgre}>>> Spawned PID $UPID, running tests${txtrst}"
         sleep 5
-        curl -D/dev/stderr -s -f -I $URL
+        curl -fI $URL
         RET=$?
         if [ $RET != 0 ]; then
             die "${bldred}>>> Error during curl run${txtrst}"
@@ -63,7 +68,7 @@ test_nginx_process() {
     echo -e "${bldyel}================== TESTING =====================${txtrst}"
     echo -e "${bldyel}>>> Spawning nginx${txtrst}"
     echo -en "${bldred}"
-    coproc $PREFIX/bin/nginx
+    coproc nginx
     echo -en "${txtrst}"
 
     http_test "http://localhost:8080/"
@@ -72,13 +77,6 @@ test_nginx_process() {
 
 }
 
-# Make sure we clean up after ourselves
-trap die EXIT
-trap die SIGINT SIGTERM
-
-# Don't drop privileges for the purposes of this test to avoid possible
-# permissions issues when accessing "${PREFIX}/etc/nginx" and its contents.
-echo -e "\n\nuser `id -nu` `id -ng`;"  >>"${PREFIX}/etc/nginx/nginx.conf"
 
 nginx -V
 nginx -t
