@@ -5,7 +5,7 @@ set +x
 if [[ "${target_platform}" == linux-aarch64 ]]; then
    # Skip testing on aarch64 because 'ps' is not found
    exit 0
-
+fi
 
 if [[ -n "$TERM" && "$TERM" != dumb ]]; then
     txtund=$(tput sgr 0 1)          # underline
