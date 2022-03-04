@@ -12,9 +12,8 @@ if [[ $(uname -s) == Darwin ]]; then
   # this works for macOS 10.12
   # export cc_opt="$cc_opt -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -fno-strict-overflow -m64 -mtune=generic -fPIC"
 
-  export cc_opt="$cc_opt -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=spp-buffer-size=4 -fno-strict-overflow -m64 -mtune=generic -fPIC"
-
   export cc_opt="$cc_opt $CFLAGS"
+  
   export ld_opt="-L$PREFIX/lib ${LDFLAGS}"
   mkdir -p $PREFIX/lib
   # http://blog.quarkslab.com/clang-hardening-cheat-sheet.html
