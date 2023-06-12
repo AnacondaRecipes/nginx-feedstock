@@ -42,13 +42,11 @@ requirements:
     - pcre2
 
 test:
-  commands:
-    - nginx -h
   requires:
     - curl
 
 about:
-  home: https://www.nginx.org
+  home: https://nginx.org
   license: BSD-2-Clause
   license_family: BSD
   license_file: LICENSE

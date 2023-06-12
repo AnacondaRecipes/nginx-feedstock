@@ -1,6 +1,9 @@
 #!/bin/bash
 
+set -e
 set +x
+
+nginx -h
 
 if [[ "${target_platform}" == linux-aarch64 ]]; then
    # Skip testing on aarch64 because 'ps' is not found
