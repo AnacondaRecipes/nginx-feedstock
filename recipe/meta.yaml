@@ -1,5 +1,5 @@
 {% set name = "nginx" %}
-{% set version = "1.21.6" %}
+{% set version = "1.25.0" %}
 
 package:
   name: {{ name|lower }}
@@ -8,19 +8,17 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://nginx.org/download/{{ name }}-{{ version }}.tar.gz
-  sha256: 66dc7081488811e9f925719e34d1b4504c2801c81dee2920e5452a86b11405ae
+  sha256: 5ed44d45943272a4e8a5bcf4434237210f2de31b903fca5e381c1bbd7eee1e8c
   patches:
     - pcre-config.patch  # find pcre in PREFIX instead of /usr
 
 build:
-  number: 1
+  number: 0
   no_link:
     - etc/*
     - var/log/nginx/*
   # nginx and libgd currently isn't available on s390x 
   skip: true  # [win or s390x]
-  ignore_run_exports:
-    - libgfortran5  # [osx and arm64]
 
 requirements:
   build:
@@ -33,14 +31,14 @@ requirements:
   host:
     - libgd {{ libgd }}
     - libxslt 1.1.*
-    - openssl
-    - pcre2
-    - zlib
+    - openssl {{ openssl }}
+    - pcre2 10.42
+    - zlib {{ zlib }}
   run:
     - libgd {{ libgd }}
     - libxml2
     - libxslt 1.1.*
-    - openssl
+    - openssl 3.*
     - pcre2
 
 test:
