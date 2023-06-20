@@ -31,7 +31,7 @@ requirements:
   host:
     - libgd {{ libgd }}
     - libxslt 1.1.*
-    - openssl {{ openssl }}
+    - openssl 3.0.8
     - pcre2 10.42
     - zlib {{ zlib }}
   run:
