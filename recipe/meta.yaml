@@ -17,8 +17,7 @@ build:
   no_link:
     - etc/*
     - var/log/nginx/*
-  # nginx and libgd currently isn't available on s390x 
-  skip: true  # [win or s390x]
+  skip: true  # [win]
 
 requirements:
   build:
@@ -27,7 +26,7 @@ requirements:
     - {{ compiler('fortran') }}  # [not osx]
     - make
     - m2-patch  # [win]
-    - patch  # [not win] 
+    - patch  # [not win]
   host:
     - libgd {{ libgd }}
     - libxslt 1.1.*
