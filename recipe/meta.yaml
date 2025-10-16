@@ -1,5 +1,5 @@
 {% set name = "nginx" %}
-{% set version = "1.26.3" %}
+{% set version = "1.28.0" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://nginx.org/download/{{ name }}-{{ version }}.tar.gz
-  sha256: 69ee2b237744036e61d24b836668aad3040dda461fe6f570f1787eab570c75aa
+  sha256: c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a
   patches:
     - pcre-config.patch  # find pcre in PREFIX instead of /usr
 
@@ -21,18 +21,17 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}  # [not osx]
     - make
-    - m2-patch  # [win]
-    - patch  # [not win]
   host:
     - libgd {{ libgd }}
     - libxslt 1.1.*
     - libxml2 {{ libxml2 }}
     - openssl 3.0.8
-    - pcre2 10.42
+    - pcre2 {{ pcre2 }}
     - zlib {{ zlib }}
   run:
     - libgd {{ libgd }}
