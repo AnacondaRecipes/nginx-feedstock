@@ -37,6 +37,7 @@ requirements:
     - libgd
     - libxml2
     - libxslt
+    - libzlib
     - openssl
     - pcre2
 
